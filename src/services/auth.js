@@ -43,3 +43,13 @@ export const actualizarUsuario = async (datos, token) => {
     return response.data;
 };
 
+export const obtenerUsuario = async (token) => {
+    const response = await api.get('/perfil', {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+    return response.data;
+};
+
+

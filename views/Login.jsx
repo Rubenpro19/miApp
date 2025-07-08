@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, Platform, Alert } from 'react-native';
 import styles from '../styles/styles_formularios';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { iniciarSesion } from '../src/services/auth';
 import { mostrarAlerta } from '../src/services/alerta';
-
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const Login = ({ navigation }) => {
     // Estados para manejar el email y la contraseña
     const [email, setEmail] = useState('');

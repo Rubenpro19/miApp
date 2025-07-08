@@ -12,6 +12,8 @@ const Perfil = ({ navigation }) => {
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [password_confirmation, setPasswordConfirmation] = useState('');
     const [usuario, setUsuario] = useState(null);
 
     useEffect(() => {
@@ -37,16 +39,35 @@ const Perfil = ({ navigation }) => {
 
 
     const handleGuardar = async () => {
+        if (!name || !email) {
+            mostrarAlerta("Campos requeridos", "Nombre y correo no pueden estar vacíos");
+            return;
+        }
+
+        // Validar contraseñas solo si el usuario las escribió
+        if ((password || password_confirmation) && password !== password_confirmation) {
+            mostrarAlerta("Error", "Las contraseñas no coinciden");
+            return;
+        }
         try {
             const token = await AsyncStorage.getItem('token');
-
-            const data = await actualizarUsuario({ name, email }, token);
+            // Construir el payload dinámicamente
+            const payload = { name, email };
+            if (password) {
+                payload.password = password;
+                payload.password_confirmation = password_confirmation;
+            }
+            const data = await actualizarUsuario(payload, token);
 
             // Actualizar usuario en estado y en almacenamiento
             setUsuario(data.user);
             await AsyncStorage.setItem('usuario', JSON.stringify(data.user));
 
             mostrarAlerta("Éxito", "Datos actualizados correctamente");
+            
+            // Limpiar campos de contraseña después de actualizar
+            setPassword("");
+            setPasswordConfirmation("");
         } catch (error) {
             if (error.response?.data?.errors) {
                 const primerCampo = Object.keys(error.response.data.errors)[0];
@@ -108,6 +129,7 @@ const Perfil = ({ navigation }) => {
                         value={name}
                         onChangeText={setName}
                     />
+
                     <Text style={styles.label}>Correo:</Text>
                     <TextInput
                         style={styles.input}
@@ -116,6 +138,27 @@ const Perfil = ({ navigation }) => {
                         keyboardType="email-address"
                         autoCapitalize="none"
                     />
+
+                    <Text style={styles.label}>Contraseña</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Ingrese su contraseña"
+                        secureTextEntry
+                        autoCapitalize="none"
+                        value={password}
+                        onChangeText={setPassword}
+                    />
+
+                    <Text style={styles.label}>Confirme su contraseña:</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Repita su contraseña"
+                        secureTextEntry
+                        autoCapitalize="none"
+                        value={password_confirmation}
+                        onChangeText={setPasswordConfirmation}
+                    />
+
                     <TouchableOpacity style={styles.button} onPress={handleGuardar}>
                         <Text style={styles.buttonText}>Guardar Cambios</Text>
                     </TouchableOpacity>

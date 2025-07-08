@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Appbar, Drawer, Portal, Modal } from 'react-native-paper';
 import styles from '../styles/styles_dashboard';
 import { cerrarSesion } from '../src/services/auth';
+import { obtenerUsuario } from '../src/services/auth';
 
 const Dashboard = ({ navigation }) => {
     const [drawerVisible, setDrawerVisible] = useState(false);
@@ -12,14 +13,20 @@ const Dashboard = ({ navigation }) => {
     useEffect(() => {
         const cargarUsuario = async () => {
             try {
-                const usuarioGuardado = await AsyncStorage.getItem('usuario');
-                if (usuarioGuardado) {
-                    setUsuario(JSON.parse(usuarioGuardado));
-                } else {
+                const token = await AsyncStorage.getItem('token');
+                if (!token) {
                     navigation.replace('Login');
+                    return;
                 }
+
+                // Consultar el usuario desde el backend
+                const data = await obtenerUsuario(token);
+                setUsuario(data);
+
+                // Actualizar el usuario en AsyncStorage
+                await AsyncStorage.setItem('usuario', JSON.stringify(data));
             } catch (error) {
-                console.error("Error al cargar usuario:", error);
+                console.error("Error al cargar usuario actualizado:", error);
                 navigation.replace('Login');
             }
         };
