@@ -9,6 +9,7 @@ const Login = ({ navigation }) => {
     // Estados para manejar el email y la contraseña
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     // Función para redirigir al dashboard dependiendo de la plataforma
     const irADashboard = () => {
@@ -75,15 +76,28 @@ const Login = ({ navigation }) => {
                     onChangeText={setEmail}
                 />
 
+
                 <Text style={styles.label}>Contraseña:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Ingrese su contraseña"
-                    secureTextEntry
-                    autoCapitalize="none"
-                    value={password}
-                    onChangeText={setPassword}
-                />
+                <View style={styles.inputPasswordContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Ingrese su contraseña"
+                        secureTextEntry={!showPassword}
+                        autoCapitalize="none"
+                        value={password}
+                        onChangeText={setPassword}
+                    />
+                    <TouchableOpacity
+                        onPress={() => setShowPassword(!showPassword)}
+                        style={styles.iconPassword}
+                    >
+                        <Icon
+                            name={showPassword ? 'eye-off' : 'eye'}
+                            size={24}
+                            color="#888"
+                        />
+                    </TouchableOpacity>
+                </View>
 
                 <TouchableOpacity style={styles.button} onPress={handleLogin}>
                     <Text style={styles.buttonText}>Iniciar Sesión</Text>

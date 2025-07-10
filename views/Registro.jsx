@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Alert, StyleSheet, ScrollView, View, TextInput, TouchableOpacity, Text, Platform } from 'react-native';
 import styles from '../styles/styles_formularios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { registrarUsuario } from '../src/services/auth';
 import { mostrarAlerta } from '../src/services/alerta';
 
@@ -11,6 +12,8 @@ const Registro = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [password_confirmation, setPasswordConfirmation] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword2, setShowPassword2] = useState(false);
 
     const irALogin = () => {
         navigation.navigate("Login");
@@ -81,25 +84,47 @@ const Registro = ({ navigation }) => {
                 />
 
                 <Text style={styles.label}>Contraseña:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Ingrese su contraseña"
-                    secureTextEntry
-                    autoCapitalize="none"
-                    value={password}
-                    onChangeText={setPassword}
-                />
+                <View style={styles.inputPasswordContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Ingrese su contraseña"
+                        secureTextEntry={!showPassword}
+                        autoCapitalize="none"
+                        value={password}
+                        onChangeText={setPassword}
+                    />
+                    <TouchableOpacity
+                        onPress={() => setShowPassword(!showPassword)}
+                        style={styles.iconPassword}
+                    >
+                        <Icon
+                            name={showPassword ? 'eye-off' : 'eye'}
+                            size={24}
+                            color="#888"
+                        />
+                    </TouchableOpacity>
+                </View>
 
                 <Text style={styles.label}>Confirme su contraseña:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Repita su contraseña"
-                    secureTextEntry
-                    autoCapitalize="none"
-                    value={password_confirmation}
-                    onChangeText={setPasswordConfirmation}
-                />
-
+                <View style={styles.inputPasswordContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Repita su contraseña"
+                        secureTextEntry={!showPassword2}
+                        autoCapitalize="none"
+                        value={password_confirmation}
+                        onChangeText={setPasswordConfirmation}
+                    />
+                    <TouchableOpacity
+                        onPress={() => setShowPassword2(!showPassword2)}
+                        style={styles.iconPassword}>
+                        <Icon
+                            name={showPassword2 ? 'eye-off' : 'eye'}
+                            size={24}
+                            color="#888"
+                        />
+                    </TouchableOpacity>
+                </View>
                 <TouchableOpacity style={styles.button} onPress={handleRegistro}>
                     <Text style={styles.buttonText}>Registrarse</Text>
                 </TouchableOpacity>

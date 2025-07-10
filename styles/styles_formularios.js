@@ -80,4 +80,14 @@ export default StyleSheet.create({
         fontWeight: '500',
         fontSize: 14,
     },
+    inputPasswordContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        position: 'relative',
+    },
+    iconPassword: {
+        position: 'absolute',
+        right: 10,
+        top: 11,
+    },
 });
