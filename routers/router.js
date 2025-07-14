@@ -12,6 +12,15 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+function LogoutTab({ navigation }) {
+    React.useEffect(() => {
+        import('../src/services/auth').then(({ cerrarSesion }) => {
+            cerrarSesion(navigation);
+        });
+    }, [navigation]);
+    return null;
+}
+
 function MainTabs() {
     return (
         <Tab.Navigator
@@ -30,6 +39,7 @@ function MainTabs() {
         >
             <Tab.Screen name="Dashboard" component={Dashboard} />
             <Tab.Screen name="Perfil" component={Perfil} />
+            <Tab.Screen name="Cerrar sesión" component={LogoutTab} />
         </Tab.Navigator>
     );
 }

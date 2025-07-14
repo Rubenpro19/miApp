@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { iniciarSesion } from '../src/services/auth';
 import { mostrarAlerta } from '../src/services/alerta';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 const Login = ({ navigation }) => {
     // Estados para manejar el email y la contraseña
     const [email, setEmail] = useState('');
