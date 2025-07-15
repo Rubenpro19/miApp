@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, Platform, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, Platform, Alert, ScrollView } from 'react-native';
 import styles from '../styles/styles_formularios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { iniciarSesion } from '../src/services/auth';
@@ -63,52 +63,54 @@ const Login = ({ navigation }) => {
     };
 
     return (
-        <View style={styles.formulario}>
-            <View style={styles.containerInterno}>
-                <Text style={styles.title}>Iniciar Sesión</Text>
+        <ScrollView>
+            <View style={styles.formulario}>
+                <View style={styles.containerInterno}>
+                    <Text style={styles.title}>Iniciar Sesión</Text>
 
-                <Text style={styles.label}>Correo electrónico:</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Ingrese su correo"
-                    keyboardType="email-address"
-                    autoCapitalize="none"
-                    value={email}
-                    onChangeText={setEmail}
-                />
-
-
-                <Text style={styles.label}>Contraseña:</Text>
-                <View style={styles.inputPasswordContainer}>
+                    <Text style={styles.label}>Correo electrónico:</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Ingrese su contraseña"
-                        secureTextEntry={!showPassword}
+                        placeholder="Ingrese su correo"
+                        keyboardType="email-address"
                         autoCapitalize="none"
-                        value={password}
-                        onChangeText={setPassword}
+                        value={email}
+                        onChangeText={setEmail}
                     />
-                    <TouchableOpacity
-                        onPress={() => setShowPassword(!showPassword)}
-                        style={styles.iconPassword}
-                    >
-                        <Icon
-                            name={showPassword ? 'eye-off' : 'eye'}
-                            size={24}
-                            color="#888"
+
+
+                    <Text style={styles.label}>Contraseña:</Text>
+                    <View style={styles.inputPasswordContainer}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Ingrese su contraseña"
+                            secureTextEntry={!showPassword}
+                            autoCapitalize="none"
+                            value={password}
+                            onChangeText={setPassword}
                         />
+                        <TouchableOpacity
+                            onPress={() => setShowPassword(!showPassword)}
+                            style={styles.iconPassword}
+                        >
+                            <Icon
+                                name={showPassword ? 'eye-off' : 'eye'}
+                                size={24}
+                                color="#888"
+                            />
+                        </TouchableOpacity>
+                    </View>
+
+                    <TouchableOpacity style={styles.button} onPress={handleLogin}>
+                        <Text style={styles.buttonText}>Iniciar Sesión</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={irARegistro}>
+                        <Text style={styles.link}>¿No tienes cuenta? ¡Regístrate!</Text>
                     </TouchableOpacity>
                 </View>
-
-                <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                    <Text style={styles.buttonText}>Iniciar Sesión</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={irARegistro}>
-                    <Text style={styles.link}>¿No tienes cuenta? ¡Regístrate!</Text>
-                </TouchableOpacity>
             </View>
-        </View>
+        </ScrollView>
     );
 };
 
