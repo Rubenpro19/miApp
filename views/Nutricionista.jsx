@@ -7,7 +7,7 @@ import WebDrawerLayout from "../components/WebDrawerLayout";
 import { MaterialIcons } from "@expo/vector-icons";
 import { obtenerUsuario } from '../src/services/user';
 
-const Dashboard = ({ navigation }) => {
+const Nutricionista = ({ navigation }) => {
     const [usuario, setUsuario] = useState(null);
 
     useEffect(() => {
@@ -38,24 +38,24 @@ const Dashboard = ({ navigation }) => {
     const content = (
         <ScrollView contentContainerStyle={styles.formulario} keyboardShouldPersistTaps="handled">
             <View style={styles.containerInterno}>
-                <Text style={styles.title}>Bienvenido/a, Paciente</Text>
+                <Text style={styles.title}>Bienvenido/a, Nutricionista</Text>
                 <Text style={styles.label}>Correo: {usuario?.email}</Text>
-                <Text style={styles.label}>Aquí puedes gestionar sus citas</Text>
+                <Text style={styles.label}>Aquí puedes gestionar sus turnos</Text>
             </View>
 
             <View style={styles.cardSection}>
-                <Text style={styles.sectionTitle}>Gestión de Citas</Text>
+                <Text style={styles.sectionTitle}>Gestión de Turnos</Text>
 
                 <View style={styles.actionsContainer}>
                     <ActionCard
-                        title="Reservar Cita"
+                        title="Generar Turnos"
                         icon="event-available"
-                        onPress={() => navigation.navigate("ReservarCita")}
+                        onPress={() => navigation.navigate("GenerarTurnos")}
                     />
                     <ActionCard
-                        title="Ver Citas"
+                        title="Ver Turnos"
                         icon="calendar-today"
-                        onPress={() => navigation.navigate("VerCitas")}
+                        onPress={() => navigation.navigate("VerTurnos")}
                     />
                 </View>
             </View>
@@ -64,7 +64,7 @@ const Dashboard = ({ navigation }) => {
 
     if (Platform.OS === "web") {
         return (
-            <WebDrawerLayout navigation={navigation} title="Panel de Paciente" sections={sections}>
+            <WebDrawerLayout navigation={navigation} title="Panel de Nutricionista" sections={sections}>
                 {content}
             </WebDrawerLayout>
         );
@@ -80,4 +80,4 @@ const ActionCard = ({ title, icon, onPress }) => (
     </TouchableOpacity>
 );
 
-export default Dashboard;
+export default Nutricionista;

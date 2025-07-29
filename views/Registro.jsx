@@ -30,6 +30,12 @@ const Registro = ({ navigation }) => {
             return;
         }
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            mostrarAlerta("Correo inválido", "Por favor ingresa un correo electrónico válido.");
+            return;
+        }
+
         try {
             const data = await registrarUsuario({
                 name,
@@ -40,14 +46,9 @@ const Registro = ({ navigation }) => {
 
             // Guardar sesión
             await AsyncStorage.setItem('usuario', JSON.stringify(data.user));
-            await AsyncStorage.setItem('token', data.token);
 
             // Redirigir al dashboard dependiendo de la plataforma
-            if (Platform.OS === 'web') {
-                navigation.replace("Dashboard");
-            } else {
-                navigation.replace("MainTabs");
-            }
+            navigation.replace("Login");
 
         } catch (error) {
             if (error.errors) {

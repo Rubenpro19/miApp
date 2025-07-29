@@ -7,7 +7,7 @@ import WebDrawerLayout from "../components/WebDrawerLayout";
 import { MaterialIcons } from "@expo/vector-icons";
 import { obtenerUsuario } from '../src/services/user';
 
-const Dashboard = ({ navigation }) => {
+const AdminUsuarios = ({ navigation }) => {
     const [usuario, setUsuario] = useState(null);
 
     useEffect(() => {
@@ -38,24 +38,25 @@ const Dashboard = ({ navigation }) => {
     const content = (
         <ScrollView contentContainerStyle={styles.formulario} keyboardShouldPersistTaps="handled">
             <View style={styles.containerInterno}>
-                <Text style={styles.title}>Bienvenido/a, Paciente</Text>
+                <Text style={styles.title}>Bienvenido/a, Administrador</Text>
                 <Text style={styles.label}>Correo: {usuario?.email}</Text>
-                <Text style={styles.label}>Aquí puedes gestionar sus citas</Text>
+                <Text style={styles.label}>Aquí puedes gestionar a los usuarios registrados.</Text>
             </View>
 
+            {/* Sección de Gestión de Usuarios */}
             <View style={styles.cardSection}>
-                <Text style={styles.sectionTitle}>Gestión de Citas</Text>
+                <Text style={styles.sectionTitle}>Gestión de Usuarios</Text>
 
                 <View style={styles.actionsContainer}>
                     <ActionCard
-                        title="Reservar Cita"
-                        icon="event-available"
-                        onPress={() => navigation.navigate("ReservarCita")}
+                        title="Registrar Usuario"
+                        icon="person-add"
+                        onPress={() => navigation.navigate("RegistroUsuario")}
                     />
                     <ActionCard
-                        title="Ver Citas"
-                        icon="calendar-today"
-                        onPress={() => navigation.navigate("VerCitas")}
+                        title="Ver Lista"
+                        icon="list"
+                        onPress={() => navigation.navigate("ListarUsuarios")}
                     />
                 </View>
             </View>
@@ -64,7 +65,7 @@ const Dashboard = ({ navigation }) => {
 
     if (Platform.OS === "web") {
         return (
-            <WebDrawerLayout navigation={navigation} title="Panel de Paciente" sections={sections}>
+            <WebDrawerLayout navigation={navigation} title="Panel de Administración" sections={sections}>
                 {content}
             </WebDrawerLayout>
         );
@@ -80,4 +81,4 @@ const ActionCard = ({ title, icon, onPress }) => (
     </TouchableOpacity>
 );
 
-export default Dashboard;
+export default AdminUsuarios;

@@ -6,6 +6,8 @@ export default StyleSheet.create({
     },
     formulario: {
         flex: 1,
+        flexGrow: 1,
+        width: '100%',
         justifyContent: 'center',
         alignItems: 'center',
         padding: 30,
@@ -18,10 +20,11 @@ export default StyleSheet.create({
         padding: 30,
         borderRadius: 12,
         shadowColor: '#000',
+        marginBottom: 24,
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.1,
-        shadowRadius: 6,
-        elevation: 4,
+        shadowRadius: 8,
+        elevation: 5,
     },
     title: {
         fontSize: 24,
@@ -54,7 +57,6 @@ export default StyleSheet.create({
         justifyContent: 'flex-start', // Asegura que los items estén arriba
     },
     input: {
-        width: '100%',
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 8,
@@ -87,5 +89,128 @@ export default StyleSheet.create({
         color: '#4a90e2',
         fontWeight: '500',
         fontSize: 14,
+    },
+    usuariosTablaContainer: {
+        marginTop: 24,
+        width: '100%',
+        alignItems: 'center',
+    },
+    usuariosTabla: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 8,
+        overflow: 'hidden',
+        width: '95%',
+        maxWidth: 600,
+        backgroundColor: '#fff',
+    },
+    usuariosTablaHeader: {
+        flexDirection: 'row',
+        backgroundColor: '#e6e6e6',
+        paddingVertical: 12,
+    },
+    usuariosTablaHeaderText: {
+        flex: 2,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        fontSize: 18,
+        color: '#333',
+    },
+    usuariosTablaRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderTopWidth: 1,
+        borderColor: '#eee',
+        paddingVertical: 12,
+    },
+    usuariosTablaCell: {
+        flex: 2,
+        textAlign: 'center',
+        fontSize: 16,
+        color: '#555',
+    },
+    usuariosTablaAcciones: {
+        flex: 2,
+        flexDirection: 'row',
+        justifyContent: 'center',
+    },
+    usuariosBtnEliminar: {
+        marginHorizontal: 8,
+        backgroundColor: '#e74c3c',
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        borderRadius: 6,
+    },
+    usuariosBtnEliminarText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 15,
+    },
+    usuariosBtnActualizar: {
+        marginHorizontal: 8,
+        backgroundColor: '#f1c40f',
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        borderRadius: 6,
+    },
+    usuariosBtnActualizarText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 15,
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: "bold",
+        marginBottom: 12,
+    },
+    sectionTitle: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 16,
+    },
+    cardSection: {
+        backgroundColor: "#fff",
+        padding: 20,
+        maxWidth: 350,
+        padding: 30, // mismo padding
+        borderRadius: 12, // mismo borde
+        borderRadius: 16,
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowOffset: { width: 0, height: 4 },
+        shadowRadius: 8,
+        elevation: 5,
+        width: '100%', // Ocupa todo el espacio disponible
+        maxWidth: 350, // Limita el ancho máximo
+        alignSelf: 'center', // Centra el contenedor
+    },
+    actionsContainer: {
+        flexDirection: "row",
+        flexWrap: "wrap",
+        justifyContent: "space-between",
+        gap: 12,
+        width: '100%', // Ocupa todo el ancho del padre (cardSection)
+        maxWidth: 350 - 40, // Restamos el padding horizontal (20 + 20)
+    },
+    actionCard: {
+        backgroundColor: "#1e88e5",
+        padding: 16,
+        borderRadius: 12,
+        width: "47%",
+        alignItems: "center",
+        justifyContent: "center",
+        marginBottom: 12,
+        shadowColor: "#000",
+        shadowOpacity: 0.1,
+        shadowOffset: { width: 0, height: 4 },
+        shadowRadius: 8,
+        elevation: 6,
+    },
+    actionText: {
+        marginTop: 8,
+        color: "#fff",
+        fontSize: 16,
+        fontWeight: "600",
+        textAlign: "center",
     },
 });

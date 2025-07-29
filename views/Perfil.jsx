@@ -4,8 +4,9 @@ import { Appbar, Drawer, Portal, Modal } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from '../styles/styles_dashboard';
 import { cerrarSesion } from '../src/services/auth';
-import { actualizarUsuario } from '../src/services/auth';
+import { actualizarUsuario } from '../src/services/user';
 import { mostrarAlerta } from '../src/services/alerta';
+import WebDrawerLayout from "../components/WebDrawerLayout";
 import { obtenerPersonaPorUsuario, crearPersona, actualizarPersona } from '../src/services/persona';
 
 const Perfil = ({ navigation }) => {
@@ -16,7 +17,7 @@ const Perfil = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [password_confirmation, setPasswordConfirmation] = useState('');
     const [usuario, setUsuario] = useState(null);
-    
+
     // Estados para los datos de persona
     const [cedula, setCedula] = useState('');
     const [fechaNacimiento, setFechaNacimiento] = useState('');
@@ -115,128 +116,104 @@ const Perfil = ({ navigation }) => {
         }
     };
 
-    return (
-        <View style={styles.root}>
-            {Platform.OS === 'web' && (
-                <>
-                    <Appbar.Header>
-                        <Appbar.Action
-                            icon="menu"
-                            onPress={() => setDrawerVisible(true)}
-                        />
-                        <Appbar.Content title="Perfil" />
-                    </Appbar.Header>
+    const sections = [
+        usuario?.roles_id === 1
+            ? { label: "Panel de Administrador", icon: "account-group", onPress: () => navigation.navigate('AdminUsuarios') }
+            : { label: "Dashboard", icon: "view-dashboard", onPress: () => navigation.navigate('Dashboard') },
+        { label: "Cerrar sesión", icon: "logout", onPress: async () => await cerrarSesion(navigation) },
+    ];
 
-                    <Portal>
-                        <Modal
-                            visible={drawerVisible}
-                            onDismiss={() => setDrawerVisible(false)}
-                            contentContainerStyle={styles.drawerContainer}
-                        >
-                            <Drawer.Section>
-                                <Drawer.Item
-                                    icon="view-dashboard"
-                                    label="Dashboard"
-                                    onPress={() => {
-                                        setDrawerVisible(false);
-                                        navigation.navigate('Dashboard');
-                                    }}
-                                />
-                                <Drawer.Item
-                                    icon="logout"
-                                    label="Cerrar sesión"
-                                    onPress={async () => {
-                                        setDrawerVisible(false);
-                                        await cerrarSesion(navigation);
-                                    }}
-                                />
-                            </Drawer.Section>
-                        </Modal>
-                    </Portal>
-                </>
-            )}
+    const content = (
+        <ScrollView>
+            <View style={styles.formulario}>
+                <View style={styles.containerInterno}>
+                    <Text style={styles.title}>Perfil de Usuario</Text>
+                    <Text style={styles.label}>Nombre:</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={name}
+                        onChangeText={setName}
+                    />
 
-            <ScrollView>
-                <View style={styles.formulario}>
-                    <View style={styles.containerInterno}>
-                        <Text style={styles.title}>Perfil de Usuario</Text>
-                        <Text style={styles.label}>Nombre:</Text>
-                        <TextInput
-                            style={styles.input}
-                            value={name}
-                            onChangeText={setName}
-                        />
+                    <Text style={styles.label}>Correo:</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={email}
+                        onChangeText={setEmail}
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                    />
 
-                        <Text style={styles.label}>Correo:</Text>
-                        <TextInput
-                            style={styles.input}
-                            value={email}
-                            onChangeText={setEmail}
-                            keyboardType="email-address"
-                            autoCapitalize="none"
-                        />
+                    <Text style={styles.label}>Contraseña</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Ingrese su contraseña"
+                        secureTextEntry
+                        autoCapitalize="none"
+                        value={password}
+                        onChangeText={setPassword}
+                    />
 
-                        <Text style={styles.label}>Contraseña</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Ingrese su contraseña"
-                            secureTextEntry
-                            autoCapitalize="none"
-                            value={password}
-                            onChangeText={setPassword}
-                        />
+                    <Text style={styles.label}>Confirme su contraseña:</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Repita su contraseña"
+                        secureTextEntry
+                        autoCapitalize="none"
+                        value={password_confirmation}
+                        onChangeText={setPasswordConfirmation}
+                    />
 
-                        <Text style={styles.label}>Confirme su contraseña:</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Repita su contraseña"
-                            secureTextEntry
-                            autoCapitalize="none"
-                            value={password_confirmation}
-                            onChangeText={setPasswordConfirmation}
-                        />
+                    {/* Campos de persona */}
+                    <Text style={styles.label}>Cédula:</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Ingrese su cédula"
+                        value={cedula}
+                        onChangeText={setCedula}
+                    />
 
-                        {/* Campos de persona */}
-                        <Text style={styles.label}>Cédula:</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Ingrese su cédula"
-                            value={cedula}
-                            onChangeText={setCedula}
-                        />
+                    <Text style={styles.label}>Fecha de nacimiento:</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="AAAA-MM-DD"
+                        value={fechaNacimiento}
+                        onChangeText={setFechaNacimiento}
+                    />
 
-                        <Text style={styles.label}>Fecha de nacimiento:</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="AAAA-MM-DD"
-                            value={fechaNacimiento}
-                            onChangeText={setFechaNacimiento}
-                        />
+                    <Text style={styles.label}>Dirección:</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Ingrese su dirección"
+                        value={direccion}
+                        onChangeText={setDireccion}
+                    />
 
-                        <Text style={styles.label}>Dirección:</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Ingrese su dirección"
-                            value={direccion}
-                            onChangeText={setDireccion}
-                        />
+                    <Text style={styles.label}>Teléfono:</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Ingrese su teléfono"
+                        value={telefono}
+                        onChangeText={setTelefono}
+                    />
 
-                        <Text style={styles.label}>Teléfono:</Text>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Ingrese su teléfono"
-                            value={telefono}
-                            onChangeText={setTelefono}
-                        />
-
-                        <TouchableOpacity style={styles.button} onPress={handleGuardar}>
-                            <Text style={styles.buttonText}>Guardar Cambios</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity style={styles.button} onPress={handleGuardar}>
+                        <Text style={styles.buttonText}>Guardar Cambios</Text>
+                    </TouchableOpacity>
                 </View>
-            </ScrollView>
-        </View>
+            </View>
+        </ScrollView>
     );
+
+    if (Platform.OS === "web") {
+        return (
+            <WebDrawerLayout navigation={navigation} title="Perfil" sections={sections}>
+                {content}
+            </WebDrawerLayout>
+        );
+    }
+
+    return content;
 };
 
 export default Perfil;

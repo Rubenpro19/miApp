@@ -21,35 +21,10 @@ export const iniciarSesion = async (credenciales) => {
 
 export const cerrarSesion = async (navigation, setUsuario = null) => {
     try {
-        await AsyncStorage.removeItem('usuario');
-        await AsyncStorage.removeItem('token');
-
-        if (setUsuario) {
-            setUsuario(null);
-        }
-
+        await AsyncStorage.multiRemove(['usuario', 'token']);
+        if (setUsuario) setUsuario(null);
         navigation.replace('Login');
     } catch (error) {
         console.error("Error al cerrar sesión:", error);
     }
 };
-
-export const actualizarUsuario = async (datos, token) => {
-    const response = await api.put('/user', datos, {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    });
-    return response.data;
-};
-
-export const obtenerUsuario = async (token) => {
-    const response = await api.get('/perfil', {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    });
-    return response.data;
-};
-
-
