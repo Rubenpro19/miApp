@@ -176,71 +176,82 @@ const ListarUsuarios = ({ navigation }) => {
         </ScrollView>
     );
 
+    // Renderizamos los modales en todas las plataformas
+    const modales = (
+        <Portal>
+            {/* Modal eliminar */}
+            <Modal visible={confirmVisible} onDismiss={cancelarEliminarWeb} contentContainerStyle={{ backgroundColor: '#fff', padding: 24, borderRadius: 12, maxWidth: 450, alignSelf: 'center' }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 12 }}>¿Eliminar usuario?</Text>
+                <Text style={{ textAlign: 'center', marginBottom: 18 }}>
+                    ¿Estás seguro de que deseas eliminar a {usuarioAEliminar?.name}? Esta acción no se puede deshacer.
+                </Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 12 }}>
+                    <TouchableOpacity style={[styles.actionBtn, { backgroundColor: '#e74c3c', minWidth: 100 }]} onPress={confirmarEliminarWeb}>
+                        <Text style={styles.actionBtnText}>Eliminar</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.actionBtn, { backgroundColor: '#4a90e2', minWidth: 100, marginLeft: 16 }]} onPress={cancelarEliminarWeb}>
+                        <Text style={styles.actionBtnText}>Cancelar</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
+            {/* Modal editar */}
+            <Modal visible={editarVisible} onDismiss={() => setEditarVisible(false)} contentContainerStyle={{ backgroundColor: '#fff', padding: 24, borderRadius: 12, maxWidth: 350, alignSelf: 'center' }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 12 }}>Actualizar usuario</Text>
+                {usuarioEditar && (
+                    <View>
+                        <Text style={styles.label}>Nombre:</Text>
+                        <TextInput
+                            style={styles.input}
+                            value={usuarioEditar.name}
+                            onChangeText={text => setUsuarioEditar({ ...usuarioEditar, name: text })}
+                        />
+                        <Text style={styles.label}>Correo:</Text>
+                        <TextInput
+                            style={styles.input}
+                            value={usuarioEditar.email}
+                            onChangeText={text => setUsuarioEditar({ ...usuarioEditar, email: text })}
+                            keyboardType="email-address"
+                            autoCapitalize="none"
+                        />
+                        <Text style={styles.label}>Rol:</Text>
+                        <View style={[styles.input, { padding: 0 }]}> 
+                            {[{ roles_id: 1, nombre_rol: 'Administrador' }, { roles_id: 2, nombre_rol: 'Nutricionista' }, { roles_id: 3, nombre_rol: 'Paciente' }].map(r => (
+                                <TouchableOpacity key={r.roles_id} style={{ padding: 8, backgroundColor: usuarioEditar.roles_id === r.roles_id ? '#4a90e2' : '#eee', borderRadius: 6, marginBottom: 4 }} onPress={() => setUsuarioEditar({ ...usuarioEditar, roles_id: r.roles_id })}>
+                                    <Text style={{ color: usuarioEditar.roles_id === r.roles_id ? '#fff' : '#333', textAlign: 'center' }}>{r.nombre_rol}</Text>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+                    </View>
+                )}
+                {errorEditar ? <Text style={{ color: 'red', marginTop: 8 }}>{errorEditar}</Text> : null}
+                <View style={{ flexDirection: 'column', alignItems: 'center', marginTop: 18 }}>
+                    <TouchableOpacity style={[styles.button, { minWidth: 120, marginBottom: 12 }]} onPress={handleActualizarUsuario}>
+                        <Text style={styles.buttonText}>Guardar</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.button, { minWidth: 120, marginBottom: 12 }]} onPress={() => setEditarVisible(false)}>
+                        <Text style={styles.buttonText}>Cancelar</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
+        </Portal>
+    );
+
     if (Platform.OS === "web") {
         return (
             <WebDrawerLayout navigation={navigation} title="Listar Usuarios" sections={sections}>
                 {content}
-                <Portal>
-                    {/* Modal eliminar */}
-                    <Modal visible={confirmVisible} onDismiss={cancelarEliminarWeb} contentContainerStyle={{ backgroundColor: '#fff', padding: 24, borderRadius: 12, maxWidth: 350, alignSelf: 'center' }}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 12 }}>¿Eliminar usuario?</Text>
-                        <Text style={{ textAlign: 'center', marginBottom: 18 }}>
-                            ¿Estás seguro de que deseas eliminar a {usuarioAEliminar?.name}? Esta acción no se puede deshacer.
-                        </Text>
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 12 }}>
-                            <TouchableOpacity style={[styles.actionBtn, { backgroundColor: '#e74c3c', minWidth: 100 }]} onPress={confirmarEliminarWeb}>
-                                <Text style={styles.actionBtnText}>Eliminar</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={[styles.actionBtn, { backgroundColor: '#4a90e2', minWidth: 100, marginLeft: 16 }]} onPress={cancelarEliminarWeb}>
-                                <Text style={styles.actionBtnText}>Cancelar</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </Modal>
-                    {/* Modal editar */}
-                    <Modal visible={editarVisible} onDismiss={() => setEditarVisible(false)} contentContainerStyle={{ backgroundColor: '#fff', padding: 24, borderRadius: 12, maxWidth: 350, alignSelf: 'center' }}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginBottom: 12 }}>Actualizar usuario</Text>
-                        {usuarioEditar && (
-                            <View>
-                                <Text style={styles.label}>Nombre:</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    value={usuarioEditar.name}
-                                    onChangeText={text => setUsuarioEditar({ ...usuarioEditar, name: text })}
-                                />
-                                <Text style={styles.label}>Correo:</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    value={usuarioEditar.email}
-                                    onChangeText={text => setUsuarioEditar({ ...usuarioEditar, email: text })}
-                                    keyboardType="email-address"
-                                    autoCapitalize="none"
-                                />
-                                <Text style={styles.label}>Rol:</Text>
-                                <View style={[styles.input, { padding: 0 }]}> 
-                                    {[{ roles_id: 1, nombre_rol: 'Administrador' }, { roles_id: 2, nombre_rol: 'Nutricionista' }, { roles_id: 3, nombre_rol: 'Paciente' }].map(r => (
-                                        <TouchableOpacity key={r.roles_id} style={{ padding: 8, backgroundColor: usuarioEditar.roles_id === r.roles_id ? '#4a90e2' : '#eee', borderRadius: 6, marginBottom: 4 }} onPress={() => setUsuarioEditar({ ...usuarioEditar, roles_id: r.roles_id })}>
-                                            <Text style={{ color: usuarioEditar.roles_id === r.roles_id ? '#fff' : '#333', textAlign: 'center' }}>{r.nombre_rol}</Text>
-                                        </TouchableOpacity>
-                                    ))}
-                                </View>
-                            </View>
-                        )}
-                        {errorEditar ? <Text style={{ color: 'red', marginTop: 8 }}>{errorEditar}</Text> : null}
-                        <View style={{ flexDirection: 'column', alignItems: 'center', marginTop: 18 }}>
-                            <TouchableOpacity style={[styles.button, { minWidth: 120, marginBottom: 12 }]} onPress={handleActualizarUsuario}>
-                                <Text style={styles.buttonText}>Guardar</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={[styles.button, { minWidth: 120, marginBottom: 12 }]} onPress={() => setEditarVisible(false)}>
-                                <Text style={styles.buttonText}>Cancelar</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </Modal>
-                </Portal>
+                {modales}
             </WebDrawerLayout>
         );
     }
 
-    return content;
+    // En móvil, renderizamos el contenido y los modales juntos
+    return (
+        <View>
+            {content}
+            {modales}
+        </View>
+    );
 };
 
 export default ListarUsuarios;

@@ -14,7 +14,7 @@ export default StyleSheet.create({
         backgroundColor: '#f5f5f5',
     },
     containerInterno: {
-        width: '90%',
+        width: '100%',
         maxWidth: 350,
         backgroundColor: '#fff',
         padding: 30,
@@ -38,6 +38,7 @@ export default StyleSheet.create({
         marginBottom: 6,
         fontWeight: '600',
         color: '#555',
+        textAlign: 'left',
     },
     drawerContainer: {
         backgroundColor: '#fff',
@@ -180,9 +181,7 @@ export default StyleSheet.create({
         shadowOffset: { width: 0, height: 4 },
         shadowRadius: 8,
         elevation: 5,
-        width: '100%', // Ocupa todo el espacio disponible
-        maxWidth: 350, // Limita el ancho máximo
-        alignSelf: 'center', // Centra el contenedor
+        width: '100%',
     },
     actionsContainer: {
         flexDirection: "row",

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, StyleSheet, ScrollView, View, TextInput, TouchableOpacity, Text, Platform } from 'react-native';
+import { Alert, StyleSheet, ScrollView, View, TextInput, TouchableOpacity, Text, Platform, ActivityIndicator } from 'react-native';
 import styles from '../styles/styles_formularios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -14,6 +14,7 @@ const Registro = ({ navigation }) => {
     const [password_confirmation, setPasswordConfirmation] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [showPassword2, setShowPassword2] = useState(false);
+    const [cargando, setCargando] = useState(false);
 
     const irALogin = () => {
         navigation.navigate("Login");
@@ -36,6 +37,7 @@ const Registro = ({ navigation }) => {
             return;
         }
 
+        setCargando(true);
         try {
             const data = await registrarUsuario({
                 name,
@@ -58,12 +60,14 @@ const Registro = ({ navigation }) => {
                 mostrarAlerta("Error", error.message || "No se pudo registrar");
             }
             console.error(error);
+        } finally {
+            setCargando(false);
         }
     };
 
     return (
-        <ScrollView contentContainerStyle={styles.formulario} keyboardShouldPersistTaps="handled">
-            <View style={styles.containerInterno}>
+        <ScrollView contentContainerStyle={[styles.formulario, styles.loginForm]} keyboardShouldPersistTaps="handled">
+            <View style={[styles.containerInterno, styles.loginContainer]}>
                 <Text style={styles.title}>Registrarse</Text>
 
                 <Text style={styles.label}>Nombre:</Text>
@@ -126,13 +130,27 @@ const Registro = ({ navigation }) => {
                         />
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.button} onPress={handleRegistro}>
-                    <Text style={styles.buttonText}>Registrarse</Text>
-                </TouchableOpacity>
+
+                {cargando ? (
+                    <View style={{ alignItems: 'center', marginVertical: 20 }}>
+                        <ActivityIndicator size="large" color="#007AFF" />
+                        <Text style={{ color: '#007AFF', marginTop: 8, fontWeight: 'bold' }}>Creando cuenta...</Text>
+                    </View>
+                ) : (
+                    <TouchableOpacity style={[styles.button, styles.loginButton]} onPress={handleRegistro} activeOpacity={0.8}>
+                        <Icon name="account-plus" size={22} color="#fff" />
+                        <Text style={[styles.buttonText, styles.loginButtonText]}>Registrarse</Text>
+                    </TouchableOpacity>
+                )}
 
                 <TouchableOpacity onPress={irALogin}>
-                    <Text style={styles.link}>¿Ya tienes cuenta? Inicia sesión</Text>
+                    <Text style={[styles.link, styles.loginLink]}>¿Ya tienes cuenta? Inicia sesión</Text>
                 </TouchableOpacity>
+                
+                <View style={styles.loginFooter}>
+                    <Icon name="shield-lock" size={28} color="#007AFF" />
+                    <Text style={styles.loginFooterText}>Tu información está protegida y cifrada.</Text>
+                </View>
             </View>
         </ScrollView>
     );

@@ -16,6 +16,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ListarUsuarios from '../views/ListarUsuarios';
 import ReservarCita from '../views/ReservarCita';
 import Nutricionista from '../views/Nutricionista';
+import GenerarTurnos from '../views/GenerarTurnos';
+import ListarTurnos from '../views/ListarTurnos';
+import HistorialCitas from '../views/HistorialCitas';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -63,6 +66,9 @@ function MainTabs() {
                     if (route.name === 'RegistroUsuario') iconName = 'account-plus';
                     if (route.name === 'ListarUsuarios') iconName = 'account-multiple';
                     if (route.name === 'ReservarCita') iconName = 'calendar-plus';
+                    if (route.name === 'GenerarTurnos') iconName = 'calendar-edit';
+                    if (route.name === 'ListarTurnos') iconName = 'calendar';
+                    if (route.name === 'HistorialCitas') iconName = 'history';
                     return <Icon name={iconName} color={color} size={size} />;
                 },
                 tabBarActiveTintColor: '#4a90e2',
@@ -82,6 +88,8 @@ function MainTabs() {
             {rol === 2 && (
                 <>
                     <Tab.Screen name="Nutricionista" component={Nutricionista} />
+                    <Tab.Screen name="GenerarTurnos" component={GenerarTurnos} />
+                    <Tab.Screen name="ListarTurnos" component={ListarTurnos} />
                     <Tab.Screen name="Perfil" component={Perfil} />
                     <Tab.Screen name="Cerrar sesión" component={LogoutTab} />
                 </>
@@ -90,6 +98,7 @@ function MainTabs() {
                 <>
                     <Tab.Screen name="Dashboard" component={Dashboard} />
                     <Tab.Screen name="ReservarCita" component={ReservarCita} />
+                    <Tab.Screen name="HistorialCitas" component={HistorialCitas} />
                     <Tab.Screen name="Perfil" component={Perfil} />
                     <Tab.Screen name="Cerrar sesión" component={LogoutTab} />
                 </>
@@ -117,6 +126,9 @@ export default function Router() {
                 <Stack.Screen name="ReservarCita" component={ReservarCita} />
                 
                 <Stack.Screen name="Nutricionista" component={Nutricionista} />
+                <Stack.Screen name="GenerarTurnos" component={GenerarTurnos} />
+                <Stack.Screen name="ListarTurnos" component={ListarTurnos} />
+                <Stack.Screen name="HistorialCitas" component={HistorialCitas} />
             </Stack.Navigator>
         </NavigationContainer>
     );

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, Platform, ScrollView, ActivityIndicator } from "react-native";
 import { registrarUsuario } from "../src/services/auth";
 import { obtenerRoles } from "../src/services/rol";
+import { cerrarSesion } from "../src/services/auth";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from '../styles/styles_formularios';
 import WebDrawerLayout from "../components/WebDrawerLayout";

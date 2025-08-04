@@ -55,7 +55,7 @@ const Nutricionista = ({ navigation }) => {
                     <ActionCard
                         title="Ver Turnos"
                         icon="calendar-today"
-                        onPress={() => navigation.navigate("VerTurnos")}
+                        onPress={() => navigation.navigate("ListarTurnos")}
                     />
                 </View>
             </View>

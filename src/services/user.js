@@ -1,3 +1,12 @@
+// Obtener usuario por id
+export const obtenerUsuarioPorId = async (id, token) => {
+    const response = await api.get(`/user/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+    return response.data;
+};
 import api from '../api';
 
 export const obtenerUsuario = async (token) => {

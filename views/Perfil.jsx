@@ -62,7 +62,6 @@ const Perfil = ({ navigation }) => {
         cargarUsuario();
     }, []);
 
-
     const handleGuardar = async () => {
         if (!name || !email) {
             mostrarAlerta("Campos requeridos", "Nombre y correo no pueden estar vacíos");
@@ -119,7 +118,11 @@ const Perfil = ({ navigation }) => {
     const sections = [
         usuario?.roles_id === 1
             ? { label: "Panel de Administrador", icon: "account-group", onPress: () => navigation.navigate('AdminUsuarios') }
-            : { label: "Dashboard", icon: "view-dashboard", onPress: () => navigation.navigate('Dashboard') },
+            : usuario?.roles_id === 2
+                ? { label: "Panel Nutricionista", icon: "account-heart", onPress: () => navigation.navigate('Nutricionista') }
+                : { label: "Dashboard", icon: "view-dashboard", onPress: () => navigation.navigate('Dashboard'),
+                    label: "Reservar Cita", icon: "calendar-plus", onPress: () => navigation.navigate('ReservarCita')
+                 },
         { label: "Cerrar sesión", icon: "logout", onPress: async () => await cerrarSesion(navigation) },
     ];
 

@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Platform,
-  ActivityIndicator,
-} from "react-native";
+import {View, Text, TextInput, TouchableOpacity, Platform, ActivityIndicator} from "react-native";
 import styles from "../styles/styles_formularios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { iniciarSesion } from "../src/services/auth";
@@ -103,8 +96,8 @@ const Login = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.formulario}>
-      <View style={styles.containerInterno}>
+    <View style={[styles.formulario, styles.loginForm]}> 
+      <View style={[styles.containerInterno, styles.loginContainer]}>
         <Text style={styles.title}>Iniciar Sesión</Text>
 
         <Text style={styles.label}>Correo electrónico:</Text>
@@ -140,16 +133,29 @@ const Login = ({ navigation }) => {
         </View>
 
         {cargando ? (
-          <ActivityIndicator size="large" color="#007AFF" style={{ marginVertical: 20 }} />
+          <View style={{ alignItems: 'center', marginVertical: 20 }}>
+            <ActivityIndicator size="large" color="#007AFF" />
+            <Text style={{ color: '#007AFF', marginTop: 8, fontWeight: 'bold' }}>Verificando credenciales...</Text>
+          </View>
         ) : (
-          <TouchableOpacity style={styles.button} onPress={handleLogin}>
-            <Text style={styles.buttonText}>Iniciar Sesión</Text>
+          <TouchableOpacity
+            style={[styles.button, styles.loginButton]}
+            onPress={handleLogin}
+            activeOpacity={0.8}
+          >
+            <Icon name="login" size={22} color="#fff" style={{ marginRight: 8 }} />
+            <Text style={[styles.buttonText, styles.loginButtonText]}>Iniciar Sesión</Text>
           </TouchableOpacity>
         )}
 
         <TouchableOpacity onPress={irARegistro}>
-          <Text style={styles.link}>¿No tienes cuenta? ¡Regístrate!</Text>
+          <Text style={[styles.link, styles.loginLink]}>¿No tienes cuenta? ¡Regístrate!</Text>
         </TouchableOpacity>
+        {/* Pie visual */}
+        <View style={styles.loginFooter}>
+          <Icon name="shield-lock" size={28} color="#007AFF" style={{ marginBottom: 4 }} />
+          <Text style={styles.loginFooterText}>Tu información está protegida y cifrada.</Text>
+        </View>
       </View>
     </View>
   );
